@@ -1,4 +1,4 @@
-const fs = require('node:fs');
+const data = (require('node:fs').readFileSync('input.txt', { encoding: 'utf8' }));
 
 /**
  * @param {string} text 
@@ -36,31 +36,8 @@ const similarity = (arr) => {
     return count;
 }
 
-/**
- * Get the solution for part 1
- * @param {text} inputfile 
- */
-function part1(inputfile) {
-    try {
-        const data = fs.readFileSync(inputfile, { encoding: 'utf8' });
-        return compare(parse(data)).reduce((p, v) => p+v, 0);
-    } catch (err) {
-        console.log(err);
-    }
-}
+const part1 = () => compare(parse(data)).reduce((p, v) => p+v, 0);
+const part2 = () => similarity(parse(data)).reduce((p, v) => p+(v[0]*v[1]), 0);
 
-/**
- * Get the solution for part 2
- * @param {text} inputfile 
- */
-function part2(inputfile) {
-    try {
-        const data = fs.readFileSync(inputfile, { encoding: 'utf8' });
-        return similarity(parse(data)).reduce((p, v) => p+(v[0]*v[1]), 0);
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-console.log('PART1', part1('input.txt'))
-console.log('PART2', part2('input.txt'))
+console.log('PART1', part1());
+console.log('PART2', part2());
