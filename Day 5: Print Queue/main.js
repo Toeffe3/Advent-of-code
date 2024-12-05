@@ -27,9 +27,13 @@ const checkOrder = (data) => {
     return results
 }
 
+const totalSwaps = {checks: 0, swaps: 0};
+
 const sortAlg = (orderObj, b, a) => {
-    console.log(`${a} is before ${b} - ${(orderObj[0].includes(a) ? orderObj[1][a].includes(b): null) ? "Allowed" : "NOT"}`);
-    return (orderObj[0].includes(a) ? orderObj[1][a].includes(b): null) ? 0 : -1
+    const swap = orderObj[0].includes(a) && orderObj[1][a].includes(b);
+    totalSwaps.checks++;
+    if(swap)totalSwaps.swaps++;
+    return swap?0:-1;
 }
 
 const sortLists = (data) => {
@@ -45,3 +49,4 @@ const part2 = (data) => sortLists(data).reduce((p, v) => p+v);
 
 console.log('PART1', part1(data));
 console.log('PART2', part2(data));
+console.log('PART2 STATS', totalSwaps);
