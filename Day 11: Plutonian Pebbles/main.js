@@ -29,3 +29,4 @@ const part2 = () => {
 }
 
 console.log("Part1", part1(data));
+console.log("Part2", part2(data));
