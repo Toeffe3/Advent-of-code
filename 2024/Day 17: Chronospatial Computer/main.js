@@ -26,7 +26,7 @@ class Computer {
     }
     
     opcode() {
-        return this.program[this.pointer+1n]
+        return this.program[this.pointer+1n];
     }
 
     literal() {
@@ -95,7 +95,7 @@ class Computer {
         while(this.pointer <= this.halt) {
             if(debug) this.debugPrint();
             this.step();
-            await new Promise(resolve => setTimeout(resolve, debug))
+            await new Promise(resolve => setTimeout(resolve, debug));
         }
         return this.out.join();
     }
@@ -134,21 +134,27 @@ class Computer {
 }
 
 const part1 = async () => {
-    const computer = new Computer(...Array.from(data[0].matchAll(/Register .: (\d+)/g),(v) => BigInt(v[1])))
-    return await computer.run(data[1].replace("Program: ", '').split(",").map(v => BigInt(v)), 50)
+    const computer = new Computer(...Array.from(data[0].matchAll(/Register .: (\d+)/g),(v) => BigInt(v[1])));
+    return await computer.run(data[1].replace("Program: ", '').split(",").map(v => BigInt(v)), 50);
 }
 
 const part2 = async (itr = 0n) => {
-    let iteration = itr, computer, program = data[1].replace("Program: ", '').split(",").map(BigInt);
-    do {
-        computer = new Computer(iteration++, 0n, 0n);
-        console.log(`\nRunning iteration: ${iteration}`);
+    const program = data[1].replace("Program: ", '').split(",").map(BigInt);
+    const pin = program.join();
+    while(true) {
+        const computer = new Computer(itr, 0n, 0n);
+        console.log(`PART2 ${itr}`);
         await computer.run(program, 1);
-    } while(computer.out.join()!==computer.program.join());
-    return computer.regA;
+        console.log("\n");
+        const out = computer.out.join()
+        if(out.length === pin.length && out===pin) return '\n';
+        else if(pin.endsWith(out)) itr *= 8n
+        else itr++;
+    }
 }
 
 (async() => {
-    console.log("PART1", await part1());
-    console.log("PART2", false);//await part2());
-})()
+    console.log("\n\n\n\n\n^--------------- Debugger ---------------^");
+    console.log("\nPART1", await part1());
+    console.log(await part2());
+})();
